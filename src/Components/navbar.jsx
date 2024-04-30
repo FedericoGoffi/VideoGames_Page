@@ -162,6 +162,12 @@ const NavBar = () => {
           </form>
         </div>
       )}
+
+      <div>
+        <Link to="/login" className={styles.Login}>LOG IN</Link>
+        <Link to="/register" className={styles.Signup}>SIGN UP</Link>
+      </div>
+
     </div>
   );
 };
