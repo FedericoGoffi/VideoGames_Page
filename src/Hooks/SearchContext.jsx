@@ -7,19 +7,25 @@ export const SearchProvider = ({ children, page = 1, pageSize = 15 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(page);
 
-  useEffect((currentPage) => {
+  const performSearch = (query) => {
+    setSearchQuery(query);
+    setCurrentPage(1);
+  };
+
+  useEffect(() => {
     const fetchData = async () => {
       if (searchQuery.trim() === '') {
         setSearchResults([]);
         return;
       }
-
+  
       try {
         setLoading(true);
         const url = 'https://api.rawg.io/api/games';
         const apiKey = '38f4fe9b1d3145c688f55ff81bd86f0f';
-
+  
         const params = {
           key: apiKey,
           dates: '2019-01-01,2024-03-27',
@@ -28,7 +34,7 @@ export const SearchProvider = ({ children, page = 1, pageSize = 15 }) => {
           page: currentPage,
           page_size: pageSize
         };
-
+  
         const response = await axios.get(url, { params });
         setSearchResults(response.data.results);
       } catch (error) {
@@ -37,13 +43,9 @@ export const SearchProvider = ({ children, page = 1, pageSize = 15 }) => {
         setLoading(false);
       }
     };
-
+  
     fetchData();
-  }, [searchQuery, page]);
-
-  const performSearch = (query) => {
-    setSearchQuery(query);
-  };
+  }, [searchQuery, currentPage, pageSize]);
 
   return (
     <SearchContext.Provider value={{ searchQuery, searchResults, loading, performSearch }}>

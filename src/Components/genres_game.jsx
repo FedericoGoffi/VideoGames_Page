@@ -4,13 +4,15 @@ import { useApi } from '../getApi';
 import styles from './genres_game.module.css';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
+import { Link, useParams } from 'react-router-dom';
 
 const GenresGame = () => {
     const [page, setPage] = useState(1);
     const pageSize = 15;
 
     const { data, loading } = useApi('', page, pageSize);
-    const { genresGames, selectedGenres, searchGamesByGenres } = useGenres();
+    const { genresGames, selectedGenres, searchGamesByGenre } = useGenres();
+    const { genreSlug } = useParams();
     const [selectedGameId, setSelectedGameId] = useState(null);
 
     const nextPage = () => {
@@ -33,10 +35,10 @@ const GenresGame = () => {
     };
 
     useEffect(() => {
-      if (selectedGenres) {
-        searchGamesByGenres(selectedGenres, page);
+      if (genreSlug) {
+        searchGamesByGenre(genreSlug, page);
       }
-    }, [selectedGenres, page]);
+    }, [genreSlug, page]);
 
     useEffect(() => {
       console.log('Genres games:', genresGames);
@@ -61,6 +63,11 @@ const GenresGame = () => {
     };
 
     const renderPlatformLogos = (platforms) => {
+
+      if (!platforms || !Array.isArray(platforms)) {
+        return null;
+      }
+
       const importantPlatforms = ['pc', 'playstation', 'xbox', 'linux', 'android', 'ios', 'nintendo', 'mac'];
       
       const additionalPlatformsCount = platforms.length - importantPlatforms.length;

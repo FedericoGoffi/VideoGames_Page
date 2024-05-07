@@ -2,42 +2,29 @@ import express from 'express';
 import sqlite3 from 'sqlite3';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import jwt from 'jsonwebtoken';
 
 const app = express();
 const PORT = 3001;
 
 const db = new sqlite3.Database('users.db');
 
-// Middleware de bodyParser para analizar el cuerpo de las solicitudes JSON
 app.use(bodyParser.json());
-
-// Middleware de CORS para permitir solicitudes desde todos los origenes
 app.use(cors({
-    origin: 'http://localhost:5173', // Reemplaza esto con el origen de tu aplicación React
-    methods: ['GET', 'POST'], // Especifica los métodos permitidos
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST'],
 }));
-
-// Middleware para permitir solicitudes desde todos los orígenes (otra forma)
-/*
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173'); // Reemplaza esto con el origen de tu aplicación React
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    next();
-});
-*/
 
 db.serialize(() => {
     db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT)");
 
-    // Ruta para el registro de usuarios
     app.post('/register', (req, res) => {
         const { username, password } = req.body;
         db.run("INSERT INTO users (username, password) VALUES (?, ?)", [username, password], (err) => {
             if (err) {
                 return res.status(500).json({ error: err.message });
             }
+            return res.status(200).json({ message: "Registration successful" });
         });
     });
 
@@ -51,10 +38,14 @@ db.serialize(() => {
             if (!row) {
                 return res.status(401).json({ error: "Invalid username or password" });
             }
+            // Genera un token de autenticación con JWT
+            const token = jwt.sign({ username: row.username }, 'secret', { expiresIn: '1h' });
+            return res.status(200).json({ message: "Login successful", token, username: row.username });
         });
     });
 });
 
+// Inicia el servidor
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });
