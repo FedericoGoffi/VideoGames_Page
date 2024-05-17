@@ -20,15 +20,15 @@ createRoot(document.getElementById('root')).render(
       <PlatformProvider>
         <GenresProvider>
           <UserProvider>
-            <NavBar />
-            <Routes>
-              <Route path="/" element={<HomeGames />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/search/:query" element={<SearchGame />} />
-              <Route path="/platform/:platformName" element={<PlatformGame />} />
-              <Route path="/genres/:genreSlug" element={<GenresGame />} />
-              <Route path="/game_details/:id" element={<GameDetails />} />
-            </Routes>
+              <NavBar />
+              <Routes>
+                <Route path="/" element={<HomeGames />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/search/:query" element={<SearchGame />} />
+                <Route path="/platform/:platformName" element={<PlatformGame />} />
+                <Route path="/genres/:genreSlug" element={<GenresGame />} />
+                <Route path="/game_details/:slug" element={<GameDetails />} />
+              </Routes>
           </UserProvider>
         </GenresProvider>
       </PlatformProvider>

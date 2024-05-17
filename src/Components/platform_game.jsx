@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { usePlatform } from '../Hooks/PlatformContext';
 import { useApi } from '../getApi';
+import { Link } from 'react-router-dom';
 import styles from './platform_game.module.css';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
@@ -132,7 +133,7 @@ const PlatformGame = () => {
                 <div className={styles.gameMenu}>
                   <p>Date of Release: {game.released}</p>
                   <p>Genres: {game.genres.map(genre => genre.name).join(', ')}</p>
-                  <button onClick={() => window.location.href = `/gamedetails/${game.id}`}>Show Details</button>
+                  <Link to={`/game_details/${game.slug}`}><button>Show Details</button></Link>
                 </div>
               )}
             </div>

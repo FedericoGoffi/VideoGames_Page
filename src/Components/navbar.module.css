@@ -2,6 +2,7 @@
     display: flex;
     position: fixed;
     top: 0;
+    left: 0;
     background-color: black;
     height: 85px;
     width: 100%;
@@ -12,6 +13,14 @@
 
   .navBarLoginRegister {
     background-color: transparent;
+  }
+
+  .navBarDetails {
+    background-color: transparent !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; 
   }
   
   .navBar.navBarScroll {

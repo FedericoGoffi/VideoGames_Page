@@ -103,7 +103,7 @@ const NavBar = () => {
   };
   
   return (
-    <div className={`${styles.navBar} ${location.pathname === '/login' || location.pathname === '/register' ? styles.navBarLoginRegister : ''}`}>
+    <div className={`${styles.navBar} ${location.pathname.includes('/game_details/') ? styles.navBarDetails : ''} ${location.pathname === '/login' ? styles.navBarLoginRegister : ''}`}>
       <a href="/">
         <h2 className={styles.TextLogo}>GAMESINFO</h2>
       </a>

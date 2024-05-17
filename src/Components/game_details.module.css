@@ -1,33 +1,408 @@
-html body {
-    background-color: #242424;
-}
-
 .container {
-    display: flex;
-    align-items: flex-start;
-    padding: 90px 0 0 170px;
-    width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-.gameImage {
-    width: 230px;
-    height: 350px;
-    background-size: cover;
-    background-position: center;
-    box-shadow: 20px 20px 40px rgba(0, 0, 0, 2);
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #242424;
 }
 
-.gameContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    color: white;
-    padding-left: 200px;
+.background::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(to bottom, rgba(36, 36, 36, 0) 0%, #242424 100%);
 }
 
-.gameTitle {
-    text-transform: uppercase;
-    font-size: 2.3em;
-    font-weight: 1000;
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.gameInfo {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  margin-top: 55em;
+  margin-left: 60px;
+}
+
+.releasedAndPlatformsContainer {
+  display: flex;
+  align-items: center;
+}
+
+.releasedAndPlatformsContainer p {
+  margin-right: 20px;
+  font-size: .9em;
+  color: black;
+  background-color: #fff;
+  padding: 3px 20px 3px 20px;
+  border-radius: 7px;
+}
+
+.platformLogosContainer {
+  display: flex;
+  align-items: center;
+}
+
+.platformLogo {
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+}
+
+.platformLogo.pc {
+  background-image: url('../assets/Img/windows.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.platformLogo.playstation {
+  background-image: url('../assets/Img/playstation.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.platformLogo.xbox {
+  background-image: url('../assets/Img/xbox.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.platformLogo.nintendo {
+  background-image: url('../assets/Img/nintendo.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.platformLogo.ios {
+  background-image: url('../assets/Img/ios.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.platformLogo.android {
+  background-image: url('../assets/Img/android.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.platformLogo.linux {
+  background-image: url('../assets/Img/linux.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.platformLogo.mac {
+  background-image: url('../assets/Img/mac.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.nameAndRatingContainer h2 {
+  text-transform: uppercase;
+  font-size: 4.5em;
+  font-weight: 1000;
+  margin-top: 20px;
+}
+
+.ratingTable {
+  display: flex;
+  width: 100%;
+  max-width: 600px;
+  height: 45px;
+  margin: 10px 0 20px 0;
+  background-color: #242424;
+}
+
+.ratingItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  transition: flex-grow 0.3s ease;
+  white-space: nowrap;
+}
+
+.ratingItem:hover {
+  cursor: default;
+  box-shadow: 0 0 10px 0 #fff;
+}
+
+.ratingLogo {
+  width: 45px;
+  height: 45px;
+  margin-right: 5px;
+  position: absolute;
+  left: -15px;
+}
+
+.exceptional {
+  background-color: #2E8B57;
+}
+
+.recommended {
+  background-color: #90EE90;
+}
+
+.meh {
+  background-color: #FFD700;
+}
+
+.skip {
+  background-color: #FF6347;
+}
+
+.ratingsLogo-exceptional {
+  background-image: url('../assets/Img/exceptional.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.ratingsLogo-recommended {
+  background-image: url('../assets/Img/recommended.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.ratingsLogo-meh {
+  background-image: url('../assets/Img/meh.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.ratingsLogo-skip {
+  background-image: url('../assets/Img/skip.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.ratingNumbers {
+  display: flex;
+}
+
+.ratingNumber {
+  margin-right: 30px;
+}
+
+.ratingName {
+  font-size: 1.05em;
+  font-weight: 700;
+}
+
+.ratingCount {
+  font-size: .85em;
+  font-weight: 700;
+}
+
+.ratingCircle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.ratingCircle.exceptional {
+  background-color: #2E8B57;
+}
+
+.ratingCircle.recommended {
+  background-color: #90EE90;
+}
+
+.ratingCircle.meh {
+  background-color: #FFD700;
+}
+
+.ratingCircle.skip {
+  background-color: #FF6347;
+}
+
+.screenshotContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 94%;
+  margin: 100px 0 20px 0;
+}
+
+.screenshotWrapper {
+  flex: 0 0 auto;
+  margin: 0 20px;
+}
+
+.screenshot {
+  max-width: 300px;
+  height: auto;
+}
+
+.prevButton, .nextButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  font-size: 1.1em;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.prevButton {
+  left: 5px;
+}
+
+.nextButton {
+  right: 4px;
+}
+
+.screenshotContainer button {
+  display: flex;
+}
+
+.largeScreenshotOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.largeScreenshot {
+  position: relative;
+  width: 80%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+.largeImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.navigationButtons {
+  position: absolute;
+  bottom: 220px;
+  left: -20px;
+  right: -20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.prevButtonLarge,
+.nextButtonLarge,
+.closeButtonLarge {
+  color: #fff;
+  border: none;
+  font-size: 1.5em;
+  background-color: transparent;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.prevButtonLarge:hover,
+.nextButtonLarge:hover,
+.closeButtonLarge:hover {
+  transform: scale(1.2);
+}
+
+.closeButtonLarge {
+  align-items: center;
+  padding-bottom: 15px;
+}
+
+.descriptionContainer {
+  display: flex;
+  width: 95%;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.descriptionContainer h2 {
+  font-size: 2em;
+  font-weight: 1000;
+  text-transform: uppercase;
+  border-bottom: 2px solid #fff;
+  padding-top: 40px;
+}
+
+.descriptionContainer p {
+  font-size: 1.1em;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.buttonShow {
+  display: inline-block;
+  margin-top: 20px;
+  font-size: 1.3em;
+  color: white;
+  background-color: transparent;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.requirementsContainer {
+  display: flex;
+  text-align: center;
+  width: 97%;
+  justify-content: center;
+}
+
+.requirementsContainer h2 {
+  font-size: 1.2em;
+}
+
+.requirementsContainer p {
+  font-size: 1.1em;
+  padding: 0 25px 0 25px;
 }

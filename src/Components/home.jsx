@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useApi } from '../getApi';
+import { Link } from 'react-router-dom';
 import styles from './home.module.css';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
 
 const Home = () => {
   const [page, setPage] = useState(1);
-  const [selectedGameId, setSelectedGameId] = useState(null);
   const pageSize = 15;
 
   const { data, loading } = useApi('', page, pageSize);
@@ -74,7 +74,7 @@ const Home = () => {
   startPage = Math.max(1, endPage - 4);
 
   return (
-    <div>
+<div>
       {loading && <p>Loading...</p>}
       {data && data.results.length > 0 && (
         <div className={styles.container}>
@@ -82,8 +82,6 @@ const Home = () => {
             <div 
               key={game.id} 
               className={`${styles.gameContainer} ${game.metacritic <= 0 ? styles.noMetacritic : ''}`}
-              onMouseEnter={() => setSelectedGameId(game.id)}
-              onMouseLeave={() => setSelectedGameId(null)}
             >
               <div
                 className={styles.gameImage}
@@ -106,14 +104,11 @@ const Home = () => {
                 </div>
               </div>
               <p className={`${styles.gameTitle} ${game.metacritic <= 0 ? styles.noMetacritic : ''}`}>{game.name}</p>
-
-              {selectedGameId === game.id && (
-                <div className={styles.gameMenu}>
-                  <p>Date of Release: {game.released}</p>
-                  <p>Genres: {game.genres.map(genre => genre.name).join(', ')}</p>
-                  <button onClick={() => window.location.href = `/gamedetails/${game.id}`}>Show Details</button>
-                </div>
-              )}
+              <div className={styles.gameMenu}>
+                <p>Date of Release: {game.released}</p>
+                <p>Genres: {game.genres.map(genre => genre.name).join(', ')}</p>
+                <Link to={`/game_details/${game.slug}`}><button>Show Details</button></Link>
+              </div>
             </div>
           ))}
         </div>

@@ -134,7 +134,7 @@ const GenresGame = () => {
                   <div className={styles.gameMenu}>
                     <p>Date of Release: {game.released}</p>
                     <p>Genres: {game.genres.map(genre => genre.name).join(', ')}</p>
-                    <button onClick={() => window.location.href = `/gamedetails/${game.id}`}>Show Details</button>
+                    <Link to={`/game_details/${game.slug}`}><button>Show Details</button></Link>
                   </div>
                 )}
               </div>
