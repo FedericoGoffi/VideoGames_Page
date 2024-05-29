@@ -38,8 +38,7 @@ db.serialize(() => {
             if (!row) {
                 return res.status(401).json({ error: "Invalid username or password" });
             }
-            // Genera un token de autenticación con JWT
-            const token = jwt.sign({ username: row.username }, 'secret', { expiresIn: '1h' });
+            const token = jwt.sign({ username: row.username }, 'secret');
             return res.status(200).json({ message: "Login successful", token, username: row.username });
         });
     });

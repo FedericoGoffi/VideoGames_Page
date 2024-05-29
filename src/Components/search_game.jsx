@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSearch } from '../Hooks/SearchContext';
-import { useApi } from '../getApi';
+import Loading from './loading.jsx';
 import { Link } from 'react-router-dom';
 import styles from './search_game.module.css';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -9,8 +9,7 @@ import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-ico
 const SearchGame = () => {
   const [page, setPage] = useState(1);
   const pageSize = 15;
-  const { searchResults } = useSearch();
-  const { data, loading, fetchData } = useApi('', page, pageSize);
+  const { searchResults, loading } = useSearch();
   const [selectedGameId, setSelectedGameId] = useState(null);
 
   const nextPage = () => {
@@ -28,7 +27,7 @@ const SearchGame = () => {
   };
 
   const goToLastPage = () => {
-    const totalPages = data ? Math.ceil(data.count / pageSize) : 0;
+    const totalPages = searchResults ? Math.ceil(searchResults.length / pageSize) : 0;
     setPage(totalPages);
   };
 
@@ -70,15 +69,15 @@ const SearchGame = () => {
     );
   };
 
-  const totalPages = data ? Math.ceil(data.count / pageSize) : 0;
+  const totalPages = searchResults ? Math.ceil(searchResults.length / pageSize) : 0;
   let startPage = Math.max(1, page - 2);
   let endPage = Math.min(startPage + 4, totalPages);
   startPage = Math.max(1, endPage - 4);
 
   return (
     <div>
-      {loading && <p>Loading...</p>}
-      {searchResults && searchResults.length > 0 && (
+      {loading && <Loading />}
+      {!loading && searchResults && searchResults.length > 0 && (
         <div className={styles.container}>
           {searchResults.map((game) => (
             <div key={game.id} className={`${styles.gameContainer} ${game.metacritic <= 0 ? styles.noMetacritic : ''}`}
@@ -118,23 +117,27 @@ const SearchGame = () => {
           ))}
         </div>
       )}
-      {!loading && (!data || (data && data.results && data.results.length === 0)) && (
-        <p>No game available</p>
+      {!loading && searchResults && searchResults.length === 0 && (
+        <div className={styles.noResults}>
+          <p>No game found :c</p>
+        </div>
       )}
-      {!loading && data && (
+      {!loading && searchResults && searchResults.length > 0 && (
         <div className={styles.containerScrolling}>
           <button onClick={goToFirstPage} className={styles.arrowFirstLast}>
             <MdKeyboardDoubleArrowLeft />
           </button>
           <button onClick={prevPage} disabled={page === 1} className={styles.arrowScroll}>
-            <IoIosArrowBack/>
+            <IoIosArrowBack />
           </button>
           {[...Array(endPage - startPage + 1)].map((_, index) => (
             <button key={startPage + index} onClick={() => setPage(startPage + index)} className={styles.buttonPage}>
               {startPage + index}
             </button>
           ))}
-          <button onClick={nextPage} disabled={page === totalPages} className={styles.arrowScroll}><IoIosArrowForward/></button>
+          <button onClick={nextPage} disabled={page === totalPages} className={styles.arrowScroll}>
+            <IoIosArrowForward />
+          </button>
           <button onClick={goToLastPage} className={styles.arrowFirstLast}>
             <MdKeyboardDoubleArrowRight />
           </button>

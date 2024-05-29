@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { usePlatform } from '../Hooks/PlatformContext';
 import { useApi } from '../getApi';
+import Loading from './loading.jsx';
 import { Link } from 'react-router-dom';
 import styles from './platform_game.module.css';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -11,8 +12,7 @@ const PlatformGame = () => {
   const pageSize = 15;
   const [selectedGameId, setSelectedGameId] = useState(null);
 
-  const { data, loading } = useApi('', page, pageSize);
-  const { platformGames, selectedPlatform, searchGamesByPlatform } = usePlatform();
+  const { platformGames, selectedPlatform, searchGamesByPlatform, loading } = usePlatform();
 
   const nextPage = () => {
     setPage(page + 1);
@@ -29,7 +29,7 @@ const PlatformGame = () => {
   };
 
   const goToLastPage = () => {
-    const totalPages = data ? Math.ceil(data.count / pageSize) : 0;
+    const totalPages = platformGames ? Math.ceil(platformGames.length / pageSize) : 0;
     setPage(totalPages);
   };
 
@@ -81,26 +81,15 @@ const PlatformGame = () => {
     );
   };
 
-  const totalPages = data ? Math.ceil(data.count / pageSize) : 0;
+  const totalPages = platformGames ? Math.ceil(platformGames.length / pageSize) : 0;
   let startPage = Math.max(1, page - 2);
   let endPage = Math.min(startPage + 4, totalPages);
   startPage = Math.max(1, endPage - 4);
 
-  useEffect(() => {
-    if (selectedPlatform) {
-      console.log('Selected platform:', selectedPlatform);
-      searchGamesByPlatform(selectedPlatform);
-    }
-  }, [selectedPlatform]);
-
-  useEffect(() => {
-    console.log('Platform games:', platformGames);
-  }, [platformGames]);
-
   return (
     <div>
-      {loading && <p>Loading...</p>}
-      {platformGames && platformGames.length > 0 && (
+      {loading && <Loading />}
+      {!loading && platformGames && platformGames.length > 0 && (
         <div className={styles.container}>
           {platformGames.map((game) => (
             <div key={game.id} className={`${styles.gameContainer} ${game.metacritic <= 0 ? styles.noMetacritic : ''}`}
@@ -140,10 +129,10 @@ const PlatformGame = () => {
           ))}
         </div>
       )}
-      {!loading && (!data || (data && data.results && data.results.length === 0)) && (
-        <p>No game available</p>
+      {!loading && (!platformGames || (platformGames && platformGames.length === 0)) && (
+        <p>No game found</p>
       )}
-      {!loading && data && (
+      {!loading && platformGames && platformGames.length > 0 && (
         <div className={styles.containerScrolling}>
           <button onClick={goToFirstPage} className={styles.arrowFirstLast}>
             <MdKeyboardDoubleArrowLeft />

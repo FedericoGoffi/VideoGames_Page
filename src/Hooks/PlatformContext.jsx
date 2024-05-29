@@ -9,14 +9,14 @@ export const PlatformProvider = ({ children, page = 1, pageSize = 15 }) => {
   const [loading, setLoading] = useState(false);
 
   const searchGamesByPlatform = async (platform, currentPage) => {
+    setLoading(true);
     try {
-      setLoading(true);
       const url = 'https://api.rawg.io/api/games';
       const apiKey = '38f4fe9b1d3145c688f55ff81bd86f0f';
   
       const params = {
         key: apiKey,
-        dates: '2019-01-01,2024-03-27',
+        dates: '2020-01-01,2024-01-01',
         platforms: platform.id,
         page: currentPage,
         page_size: pageSize
@@ -33,20 +33,19 @@ export const PlatformProvider = ({ children, page = 1, pageSize = 15 }) => {
 
   useEffect(() => {
     if (selectedPlatform) {
-      searchGamesByPlatform(selectedPlatform);
+      searchGamesByPlatform(selectedPlatform, page);
     }
-  }, [selectedPlatform]);
+  }, [selectedPlatform, page]);
 
   useEffect(() => {
     console.log("selectedPlatform changed to:", selectedPlatform);
   }, [selectedPlatform]);
 
   return (
-    <PlatformContext.Provider value={{ selectedPlatform, setSelectedPlatform, platformGames, setPlatformGames, searchGamesByPlatform }}>
+    <PlatformContext.Provider value={{ selectedPlatform, setSelectedPlatform, platformGames, setPlatformGames, searchGamesByPlatform, loading }}>
       {children}
     </PlatformContext.Provider>
   );
 };
-
 
 export const usePlatform = () => useContext(PlatformContext);

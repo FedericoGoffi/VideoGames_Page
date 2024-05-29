@@ -1,33 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApi } from '../getApi';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './home.module.css';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
+import Loading from './loading.jsx';
 
 const Home = () => {
-  const [page, setPage] = useState(1);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const queryParams = new URLSearchParams(location.search);
+  const initialPage = parseInt(queryParams.get('page')) || 1;
+  
+  const [page, setPage] = useState(initialPage);
   const pageSize = 15;
 
   const { data, loading } = useApi('', page, pageSize);
 
+  useEffect(() => {
+    navigate(`?page=${page}`, { replace: true });
+  }, [page, navigate]);
+
   const nextPage = () => {
     setPage(page + 1);
+    window.scrollTo(0, 0);
   };
 
   const prevPage = () => {
     if (page > 1) {
       setPage(page - 1);
+      window.scrollTo(0, 0);
     }
   };
 
   const goToFirstPage = () => {
     setPage(1);
+    window.scrollTo(0, 0);
   };
 
   const goToLastPage = () => {
     const totalPages = data ? Math.ceil(data.count / pageSize) : 0;
     setPage(totalPages);
+    window.scrollTo(0, 0);
   };
 
   const getMetacriticColor = (score) => {
@@ -74,9 +88,9 @@ const Home = () => {
   startPage = Math.max(1, endPage - 4);
 
   return (
-<div>
-      {loading && <p>Loading...</p>}
-      {data && data.results.length > 0 && (
+    <div>
+      {loading && <Loading />}
+      {!loading && data && data.results.length > 0 && (
         <div className={styles.container}>
           {data.results.map((game) => (
             <div 
@@ -125,7 +139,10 @@ const Home = () => {
             <IoIosArrowBack/>
           </button>
           {[...Array(endPage - startPage + 1)].map((_, index) => (
-            <button key={startPage + index} onClick={() => setPage(startPage + index)} className={styles.buttonPage}>
+            <button key={startPage + index} onClick={() => {
+              setPage(startPage + index);
+              window.scrollTo(0, 0);
+            }} className={styles.buttonPage}>
               {startPage + index}
             </button>
           ))}

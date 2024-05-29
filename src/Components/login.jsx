@@ -44,18 +44,23 @@ const Login = () => {
         mode: 'cors',
       });
   
-      const data = await response.json();
-      console.log(data);
-  
       if (response.ok) {
+        const data = await response.json();
         setUsername(data.username);
         setAuthenticated(true);
+
+        const expirationDate = new Date();
+        expirationDate.setHours(expirationDate.getHours() + 1);
+  
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('tokenExpiration', expirationDate);
+        localStorage.setItem('username', data.username);
   
         alert('Sign In successfully!');
   
         navigate('/');
       } else {
-        alert('Failed to sign in. Please check your credentials.');
+        alert('Failed to sign in. Please verify your details.');
       }
     } catch (error) {
       console.error('Error:', error);

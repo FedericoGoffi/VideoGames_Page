@@ -262,3 +262,17 @@ html body {
   button:focus {
     outline: none;
   }
+
+  @media (max-width: 321px) {
+    .gameContainer:hover {
+      transform: scale(1.03);
+  }
+
+  .buttonPage {
+    background-color: transparent;
+    font-size: 1.2em;
+    transition: .3s;
+    margin: 0 5px 0 5px;
+    border: none;
+  }
+}

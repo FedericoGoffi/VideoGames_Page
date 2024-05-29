@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import styles from './game_details.module.css';
+import Loading from './loading.jsx';
 import { useParams } from 'react-router-dom';
 import { FaArrowDown, FaArrowUp, FaArrowLeft, FaArrowRight, FaTimes } from "react-icons/fa";
 
 const GameDetails = () => {
+  const [loading, setLoading] = useState(true);
   const [gameDetails, setGameDetails] = useState(null);
   const [gameScreenshots, setGameScreenshots] = useState([]);
   const [description, setDescription] = useState('');
   const [requirements, setRequirements] = useState({ minimum: '', recommended: '' });
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [highlightedRating, setHighlightedRating] = useState(null);
-  const [visibleScreenshots, setVisibleScreenshots] = useState([0, 1, 2]);
+  const [visibleScreenshots, setVisibleScreenshots] = useState([]);
   const [selectedScreenshot, setSelectedScreenshot] = useState(null);
   const { slug } = useParams();
+
+  const descriptionRef = useRef(null);
 
   const fetchGameDetails = async () => {
     try {
@@ -23,35 +27,60 @@ const GameDetails = () => {
           key: apiKey
         }
       });
-
+  
       setGameDetails(response.data);
-
+  
       const screenshotsResponse = await axios.get(`https://api.rawg.io/api/games/${slug}/screenshots`, {
         params: {
           key: apiKey
         }
       });
-
+  
       setGameScreenshots(screenshotsResponse.data.results);
-
+  
       setDescription(response.data.description);
-
+  
       const platform = response.data.platforms.find(platform => platform.platform.name === "PC");
       if (platform) {
         setRequirements(platform.requirements);
       }
+
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching game details:', error);
+      setLoading(false);
+    }
+  };
+
+  const updateVisibleScreenshots = () => {
+    const screenWidth = window.innerWidth;
+    if (screenWidth > 885) {
+      setVisibleScreenshots([0, 1, 2]);
+    } else if (screenWidth >= 750 && screenWidth <= 884) {
+      setVisibleScreenshots([0, 1]);
+    } else {
+      setVisibleScreenshots([0]);
     }
   };
 
   useEffect(() => {
     fetchGameDetails();
+    updateVisibleScreenshots();
+    window.addEventListener('resize', updateVisibleScreenshots);
+
+    return () => {
+      window.removeEventListener('resize', updateVisibleScreenshots);
+    };
   }, [slug]);
 
-  if (!gameDetails) {
-    return null;
+  if (loading) {
+    return <Loading />;
   }
+
+  const noRequirements = !requirements.minimum && !requirements.recommended;
+  const noRating = !gameDetails.ratings || gameDetails.ratings.length === 0;
+
+  const containerClassNames = `${styles.gameInfo} ${noRequirements ? styles.noRequirements : ''} ${noRating ? styles.noRating : ''} ${noRequirements && noRating ? styles.notSpecified : ''}`;
 
   const prevScreenshot = () => {
     const updatedScreenshots = visibleScreenshots.map(index => (index - 1 + gameScreenshots.length) % gameScreenshots.length);
@@ -71,20 +100,17 @@ const GameDetails = () => {
     setSelectedScreenshot((prevIndex) => (prevIndex + 1) % gameScreenshots.length);
   };
 
-  
   const openScreenshot = (index) => {
     setSelectedScreenshot(index);
+    document.body.classList.add('largeImageOpen');
   };
-
+  
   const closeScreenshot = () => {
     setSelectedScreenshot(null);
+    document.body.classList.remove('largeImageOpen');
   };
 
   const renderScreenshots = () => {
-    const openScreenshot = (index) => {
-      setSelectedScreenshot(index);
-    };
-  
     return (
       <div className={styles.screenshotContainer}>
         <button className={styles.prevButton} onClick={prevScreenshot}>
@@ -148,6 +174,30 @@ const GameDetails = () => {
     return date.toLocaleDateString('en-US', options).toUpperCase();
   };
 
+  const renderStoreLogos = (stores) => {
+    const importantStores = ['steam', 'xbox-store', 'playstation-store', 'nintendo', 'gog', 'epic-games', 'google-play', 'apple-appstore'];
+  
+    return (
+      <>
+        {stores.slice(0, 7).map((storeData) => {
+          const store = storeData.store;
+          if (importantStores.includes(store.slug)) {
+            return (
+              <div key={store.id} className={styles.storeWrapper}>
+                <div
+                  className={`${styles.storeLogo} ${styles[store.slug]}`}
+                />
+                <span className={styles.storeName}>{store.name}</span>
+              </div>
+            );
+          } else {
+            return null;
+          }
+        })}
+      </>
+    );
+  };  
+
   const renderPlatformLogos = (platforms) => {
     const importantPlatforms = ['pc', 'playstation', 'xbox', 'linux', 'android', 'ios', 'nintendo', 'mac'];
     
@@ -180,14 +230,14 @@ const GameDetails = () => {
   };
 
   const renderRatingTable = (rating) => {
-    const totalPercentage = gameDetails.ratings.reduce((total, r) => total + r.percent, 0);
-    const widthPercentage = (rating.percent / totalPercentage) * 100;
-
+    const totalVotes = gameDetails.ratings.reduce((total, r) => total + r.count, 0);
+    const widthPercentage = (rating.count / totalVotes) * 100;
+  
     return (
       <div
         key={rating.id}
         className={`${styles.ratingItem} ${styles[rating.title.toLowerCase()]}`}
-        style={{ flexBasis: `${widthPercentage}%`, flexGrow: widthPercentage }}
+        style={{ width: `${widthPercentage}%` }}
         onMouseEnter={() => setHighlightedRating(rating.title.toLowerCase())}
         onMouseLeave={() => setHighlightedRating(null)}
       >
@@ -195,7 +245,7 @@ const GameDetails = () => {
       </div>
     );
   };
-  
+
   const renderRatingTables = () => {
     return (
       <div className={styles.ratingTable}>
@@ -203,7 +253,7 @@ const GameDetails = () => {
       </div>
     );
   };
-  
+
   const renderRatingNumbers = () => {
     return (
       <div className={styles.ratingNumbers}>
@@ -216,6 +266,18 @@ const GameDetails = () => {
             <span className={styles.ratingName}>{rating.title} </span>
             <span className={styles.ratingCount}>{rating.count}</span>
           </div>
+        ))}
+      </div>
+    );
+  };
+
+  const renderTags = (tags) => {
+    return (
+      <div className={styles.tagsContainer}>
+        {tags.map(tag => (
+          <span key={tag.id} className={styles.tag}>
+            {tag.name}
+          </span>
         ))}
       </div>
     );
@@ -248,26 +310,41 @@ const GameDetails = () => {
           {renderScreenshots()}
           {renderLargeScreenshot()}
         </div>
-        <div className={styles.descriptionContainer}>
+        <div className={styles.descriptionContainer} ref={descriptionRef}>
           <h2>Description:</h2>
           <p>
             {showFullDescription ? cleanDescription(description) : `${cleanDescription(description).slice(0, 200)}`}
-            <button className={styles.buttonShow} onClick={toggleDescription}>
-              {showFullDescription ? <FaArrowUp /> : <FaArrowDown />}
-            </button>
           </p>
+          <button className={styles.buttonShow} onClick={toggleDescription}>
+            {showFullDescription ? <FaArrowUp /> : <FaArrowDown />}
+          </button>
         </div>
         <div className={styles.requirementsContainer}>
           <div>
             <h2>Minimum Requirements:</h2>
-            <p>{requirements.minimum || 'Minimum requirements not specified yet.'}</p>
+            <p className={!requirements.minimum ? styles.notSpecified : ''}>
+              {requirements.minimum || 'Minimum requirements not specified yet.'}
+            </p>
           </div>
           <div>
             <h2>Recommended Requirements:</h2>
-            <p>{requirements.recommended || 'Recommended requirements not specified yet.'}</p>
+            <p className={!requirements.recommended ? styles.notSpecified : ''}>
+              {requirements.recommended || 'Recommended requirements not specified yet.'}
+            </p>
           </div>
         </div>
-        <p>Stores: {gameDetails.stores.map(store => store.store.name).join(', ')}</p>
+        <div className={styles.storesContainer}>
+          <div className={styles.storesTagsContainer}>
+            <div className={styles.storeLogosContainer}>
+              <p>Available On:</p>
+              {renderStoreLogos(gameDetails.stores)}
+            </div>
+            <div className={styles.tagsSection}>
+              <h3>Tags:</h3>
+              {renderTags(gameDetails.tags)}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSearch } from '../Hooks/SearchContext.jsx';
 import { usePlatform } from '../Hooks/PlatformContext.jsx';
 import { useGenres } from '../Hooks/GenresContext.jsx';
@@ -13,63 +13,64 @@ const NavBar = () => {
     width: window.innerWidth,
     height: window.innerHeight,
   });
-  const navRef = useRef(null);
   const [platformDropdownOpen, setPlatformDropdownOpen] = useState(false);
   const [genreDropdownOpen, setGenreDropdownOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isGameDetails, setIsGameDetails] = useState(false);
+
   const { performSearch } = useSearch();
   const { selectedPlatform, setSelectedPlatform } = usePlatform();
   const { selectedGenres, setSelectedGenres } = useGenres();
   const { isAuthenticated, username, logout } = useUser();
   const navigate = useNavigate();
-  const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      setMenuOpen(false);
-    }
-  }, [isAuthenticated]);
-
-  const handleScroll = () => {
-    if (window.scrollY >= 90) {
-      setColor(true);
-    } else {
-      setColor(false);
-    }
-  };
+    setIsGameDetails(location.pathname.includes('/game_details/'));
+  }, [location.pathname]);
 
   useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY >= 90) {
+        setColor(true);
+      } else {
+        setColor(false);
+      }
+    };
+    
     window.addEventListener('scroll', handleScroll);
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
-  const detectDimension = () => {
-    setWindowDimension({
-      width: window.innerWidth,
-      height: window.innerHeight,
-    });
-  };
-
   useEffect(() => {
-    window.addEventListener('resize', detectDimension);
+    const detectDimension = () => {
+      setWindowDimension({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
 
+    window.addEventListener('resize', detectDimension);
     return () => {
       window.removeEventListener('resize', detectDimension);
     };
   }, []);
 
+  useEffect(() => {
+    if (isGameDetails && menuOpen) {
+      document.body.classList.add('menu-open');
+    } else {
+      document.body.classList.remove('menu-open');
+    }
+  }, [menuOpen, isGameDetails]);
+
   const handleLogout = () => {
     logout();
-    alert('Log Out successfully!');
-  };
-
-  const handleUserDropdownToggle = () => {
-    setUserDropdownOpen(!userDropdownOpen);
+    alert('Logged out successfully!');
   };
 
   const handleSearchSubmit = (e) => {
@@ -101,107 +102,166 @@ const NavBar = () => {
       setGenreDropdownOpen(!genreDropdownOpen);
     }
   };
-  
+
+  const handleUserDropdownToggle = (e) => {
+    e.stopPropagation();
+    setUserDropdownOpen(!userDropdownOpen);
+  };
+
+  const renderGenresDropdown = () => (
+    <ul className={styles.ulDropDownGenres} style={{ display: genreDropdownOpen ? 'block' : 'none' }}>
+      {[
+        { id: '1', slug: 'action', name: 'Action' },
+        { id: '2', slug: 'indie', name: 'Indie' },
+        { id: '3', slug: 'adventure', name: 'Adventure' },
+        { id: '24', slug: 'role-playing-games-rpg', name: 'RPG' },
+        { id: '10', slug: 'strategy', name: 'Strategy' },
+        { id: '2', slug: 'shooter', name: 'Shooter' },
+        { id: '9', slug: 'casual', name: 'Casual' },
+        { id: '14', slug: 'simulation', name: 'Simulation' },
+        { id: '7', slug: 'puzzle', name: 'Puzzle' },
+        { id: '8', slug: 'arcade', name: 'Arcade' },
+        { id: '83', slug: 'platformer', name: 'Platformer' },
+        { id: '1', slug: 'racing', name: 'Racing' },
+        { id: '11', slug: 'massively-multiplayer', name: 'Massively Multiplayer' },
+        { id: '15', slug: 'sports', name: 'Sports' },
+        { id: '4', slug: 'fighting', name: 'Fighting' },
+        { id: '19', slug: 'family', name: 'Family' },
+        { id: '17', slug: 'board-games', name: 'Board Games' },
+        { id: '82', slug: 'educational', name: 'Educational' },
+        { id: '91', slug: 'card', name: 'Card' }
+      ].map(genre => (
+        <li key={genre.id}>
+          <Link to={`/genres/${genre.slug}`} onClick={() => handleGenresSelect(genre)}>
+            {genre.name}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+
+  const renderPlatformDropdown = () => (
+    <ul style={{ display: platformDropdownOpen ? 'block' : 'none' }}>
+      {[
+        { id: '4', name: 'PC' },
+        { id: '187', name: 'PlayStation' },
+        { id: '186', name: 'Xbox' },
+        { id: '7', name: 'Nintendo' },
+        { id: '3', name: 'iOS' },
+        { id: '5', name: 'Mac' },
+        { id: '6', name: 'Linux' },
+        { id: '21', name: 'Android' }
+      ].map(platform => (
+        <li key={platform.id}>
+          <Link to={`/platform/${platform.name.toLowerCase()}`} onClick={() => handlePlatformSelect(platform)}>
+            {platform.name}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+
   return (
     <div className={`${styles.navBar} ${location.pathname.includes('/game_details/') ? styles.navBarDetails : ''} ${location.pathname === '/login' ? styles.navBarLoginRegister : ''}`}>
       <a href="/">
         <h2 className={styles.TextLogo}>GAMESINFO</h2>
       </a>
 
-      <form onSubmit={handleSearchSubmit} className={styles.SearchForm}>
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchQuery}
-          className={styles.SearchInput}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <button type="submit" className={styles.SearchButton}><IoMdSearch/></button>
-      </form>
-
-      {windowDimension.width > 800 && (
-        <div className={styles.containerDropDown}>
-          <ul className={styles.ulDropDown}>
-          <li className={styles.liLinks}>
-            <p onClick={() => handleDropdownToggle('genre')}>Genres<IoMdArrowDropdown/></p>
-              <ul className={styles.ulDropDownGenres} style={{ display: genreDropdownOpen ? 'block' : 'none' }}>
-                <li><Link to={`/genres/action`} onClick={() => handleGenresSelect({ id: '1', slug: 'action' })}>Action</Link></li>
-                <li><Link to={`/genres/indie`} onClick={() => handleGenresSelect({ id: '2', slug: 'indie' })}>Indie</Link></li>
-                <li><Link to={`/genres/adventure`} onClick={() => handleGenresSelect({ id: '3', slug: 'adventure' })}>Adventure</Link></li>
-                <li><Link to={`/genres/role-playing-games-rpg`} onClick={() => handleGenresSelect({ id: '24', slug: 'role-playing-games-rpg' })}>RPG</Link></li>
-                <li><Link to={`/genres/strategy`} onClick={() => handleGenresSelect({ id: '10', slug: 'strategy' })}>Strategy</Link></li>
-                <li><Link to={`/genres/shooter`} onClick={() => handleGenresSelect({ id: '2', slug: 'shooter' })}>Shooter</Link></li>
-                <li><Link to={`/genres/casual`} onClick={() => handleGenresSelect({ id: '9', slug: 'casual' })}>Casual</Link></li>
-                <li><Link to={`/genres/simulation`} onClick={() => handleGenresSelect({ id: '14', slug: 'simulation' })}>Simulation</Link></li>
-                <li><Link to={`/genres/puzzle`} onClick={() => handleGenresSelect({ id: '7', slug: 'puzzle' })}>Puzzle</Link></li>
-                <li><Link to={`/genres/arcade`} onClick={() => handleGenresSelect({ id: '8', slug: 'arcade' })}>Arcade</Link></li>
-                <li><Link to={`/genres/platformer`} onClick={() => handleGenresSelect({ id: '83', slug: 'platformer' })}>Platformer</Link></li>
-                <li><Link to={`/genres/racing`} onClick={() => handleGenresSelect({ id: '1', slug: 'racing' })}>Racing</Link></li>
-                <li><Link to={`/genres/massively-multiplayer`} onClick={() => handleGenresSelect({ id: '11', slug: 'massively-multiplayer' })}>Massively Multiplayer</Link></li>
-                <li><Link to={`/genres/sports`} onClick={() => handleGenresSelect({ id: '15', slug: 'sports' })}>Sports</Link></li>
-                <li><Link to={`/genres/fighting`} onClick={() => handleGenresSelect({ id: '4', slug: 'fighting' })}>Fighting</Link></li>
-                <li><Link to={`/genres/family`} onClick={() => handleGenresSelect({ id: '19', slug: 'family' })}>Family</Link></li>
-                <li><Link to={`/genres/board-games`} onClick={() => handleGenresSelect({ id: '17', slug: 'board-games' })}>Board Games</Link></li>
-                <li><Link to={`/genres/educational`} onClick={() => handleGenresSelect({ id: '82', slug: 'educational' })}>Educational</Link></li>
-                <li><Link to={`/genres/card`} onClick={() => handleGenresSelect({ id: '91', slug: 'card' })}>Card</Link></li>
-              </ul>
-            </li>
-            <li className={styles.liLinks}>
-              <p onClick={() => handleDropdownToggle('platform')}>Platform<IoMdArrowDropdown/></p>
-                <ul style={{ display: platformDropdownOpen ? 'block' : 'none' }}>
-                  <li><Link to={`/platform/pc`} onClick={() => handlePlatformSelect({ id: '4', name: 'PC' })}>PC</Link></li>
-                  <li><Link to={`/platform/playstation`} onClick={() => handlePlatformSelect({ id: '187', name: 'PlayStation' })}>PlayStation</Link></li>
-                  <li><Link to={`/platform/xbox`} onClick={() => handlePlatformSelect({ id: '186', name: 'Xbox' })}>Xbox</Link></li>
-                  <li><Link to={`/platform/nintendo`} onClick={() => handlePlatformSelect({ id: '7', name: 'Nintendo' })}>Nintendo</Link></li>
-                  <li><Link to={`/platform/ios`} onClick={() => handlePlatformSelect({ id: '3', name: 'iOS' })}>iOS</Link></li>
-                  <li><Link to={`/platform/mac`} onClick={() => handlePlatformSelect({ id: '5', name: 'Mac' })}>Mac</Link></li>
-                  <li><Link to={`/platform/linux`} onClick={() => handlePlatformSelect({ id: '6', name: 'Linux' })}>Linux</Link></li>
-                  <li><Link to={`/platform/android`} onClick={() => handlePlatformSelect({ id: '21', name: 'Android' })}>Android</Link></li>
-                </ul>
-            </li>
-          </ul>
-        </div>
+      {windowDimension.width < 767 && (
+        <>
+          <IoMdMenu className={styles.menuLogo} onClick={handleMenuToggle} size={25} />
+          {menuOpen && (
+            <div className={`${styles.menuContainer} ${location.pathname.includes('/game_details/') ? styles.menuContainerTransparent : ''} ${location.pathname.includes('/login') ? styles.menuContainerTransparent : ''}`}>
+              <form onSubmit={handleSearchSubmit} className={styles.searchForm}>
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  value={searchQuery}
+                  className={styles.searchInput}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <button type="submit" className={styles.searchButton}>
+                  <IoMdSearch size={20} />
+                </button>
+              </form>
+              <div className={styles.dropdownsContainer}>
+                <div className={styles.dropdown}>
+                  <p onClick={() => handleDropdownToggle('genre')}>Genres<IoMdArrowDropdown /></p>
+                  {renderGenresDropdown()}
+                </div>
+                <div className={styles.dropdown}>
+                  <p onClick={() => handleDropdownToggle('platform')}>Platform<IoMdArrowDropdown /></p>
+                  {renderPlatformDropdown()}
+                </div>
+                <div className={styles.userNavbar}>
+                  {isAuthenticated ? (
+                    <p onClick={handleUserDropdownToggle}>
+                      <span>{username}</span><IoMdArrowDropdown />
+                    </p>
+                  ) : (
+                    <button className={styles.Login}>
+                      <Link to="/login">Login</Link>
+                    </button>
+                  )}
+                </div>
+                {userDropdownOpen && (
+                  <div className={`${styles.userDropdown} ${userDropdownOpen ? styles.userDropdownOpen : ''}`}>
+                    <ul>
+                      <li><button onClick={handleLogout}>Logout</button></li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </>
       )}
 
-      {windowDimension.width < 800 && (
-        <IoMdMenu
-          className={styles.MenuLogo}
-          onClick={() => setMenuOpen(!menuOpen)}
-          size={25}
-        />
-      )}
-
-      {windowDimension.width < 800 && menuOpen && (
-        <div className={styles.containerSearch}>
-          <form className={styles.SearchForm}>
+{windowDimension.width >= 768 && (
+        <>
+          <form onSubmit={handleSearchSubmit} className={styles.SearchForm}>
             <input
               type="text"
-              placeholder="Buscar..."
+              placeholder="Search..."
+              value={searchQuery}
               className={styles.SearchInput}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <button type="submit" className={styles.SearchButton}>
-              <IoMdSearch size={20} />
-            </button>
+            <button type="submit" className={styles.SearchButton}><IoMdSearch/></button>
           </form>
-        </div>
-      )}
 
-      <div className={styles.userNavbar}>
-        <div onClick={handleMenuToggle}>
-          {isAuthenticated ? (
-            <p>
-              <span>{username}</span><IoMdArrowDropdown/>
-            </p>
-          ) : (
-            <button className={styles.Login} onClick={() => navigate('/login')}>Log in</button>
-          )}
-        </div>
-        {isAuthenticated && (
-          <ul style={{ display: menuOpen ? 'block' : 'none' }}>
-            <li onClick={handleLogout}>Logout</li>
-          </ul>
-        )}
-      </div>
+          <div className={styles.containerDropDown}>
+            <ul className={styles.ulDropDown}>
+              <li className={styles.liLinks}>
+                <p onClick={() => handleDropdownToggle('genre')}>Genres<IoMdArrowDropdown/></p>
+                {renderGenresDropdown()}
+              </li>
+              <li className={styles.liLinks}>
+                <p onClick={() => handleDropdownToggle('platform')}>Platform<IoMdArrowDropdown/></p>
+                {renderPlatformDropdown()}
+              </li>
+            </ul>
+            <div className={styles.userNavbar}>
+            <div onClick={handleMenuToggle}>
+              {isAuthenticated ? (
+                <p>
+                  <span>{username}</span><IoMdArrowDropdown/>
+                </p>
+              ) : (
+                <button className={styles.Login} onClick={() => navigate('/login')}>Login/Register</button>
+              )}
+              {isAuthenticated && menuOpen && (
+                <div className={styles.UserDropDown}>
+                  <ul>
+                    <li><Link to='/login' onClick={handleLogout}>Log out</Link></li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

@@ -1,5 +1,12 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
 .container {
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,11 +32,10 @@
   left: 0;
   width: 100%;
   height: 50%;
-  background: linear-gradient(to bottom, rgba(36, 36, 36, 0) 0%, #242424 100%);
+  background: linear-gradient(to bottom, rgba(36, 36, 36, 0) 60%, #242424 100%);
 }
 
 .overlay {
-  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -40,10 +46,23 @@
 .gameInfo {
   display: flex;
   flex-direction: column;
-  position: relative;
-  z-index: 1;
-  margin-top: 55em;
-  margin-left: 60px;
+  position: absolute;
+  top: 30%;
+  left: 60px;
+}
+
+.notSpecified {
+  top: 35em;
+  margin-top: 20px;
+}
+
+.noRating {
+  margin-top: 60em;
+}
+
+.noRequirements {
+  top: 35em;
+  margin-top: 20px;
 }
 
 .releasedAndPlatformsContainer {
@@ -129,18 +148,17 @@
 
 .nameAndRatingContainer h2 {
   text-transform: uppercase;
-  font-size: 4.5em;
+  font-size: 4.3em;
   font-weight: 1000;
   margin-top: 20px;
 }
 
 .ratingTable {
   display: flex;
-  width: 100%;
-  max-width: 600px;
+  width: 90%;
   height: 45px;
   margin: 10px 0 20px 0;
-  background-color: #242424;
+  background-color: transparent;
 }
 
 .ratingItem {
@@ -259,7 +277,7 @@
   align-items: center;
   position: relative;
   width: 94%;
-  margin: 100px 0 20px 0;
+  margin: 70px 0 20px 0;
 }
 
 .screenshotWrapper {
@@ -328,8 +346,8 @@
 .navigationButtons {
   position: absolute;
   bottom: 220px;
-  left: -20px;
-  right: -20px;
+  left: -40px;
+  right: -40px;
   display: flex;
   justify-content: space-between;
 }
@@ -358,10 +376,11 @@
 
 .descriptionContainer {
   display: flex;
-  width: 95%;
   flex-direction: column;
+  width: 95%;
   align-items: center;
   text-align: center;
+  margin-top: -20px;
 }
 
 .descriptionContainer h2 {
@@ -369,20 +388,22 @@
   font-weight: 1000;
   text-transform: uppercase;
   border-bottom: 2px solid #fff;
-  padding-top: 40px;
+  padding-top: 20px;
 }
 
 .descriptionContainer p {
   font-size: 1.1em;
+  position: static;
   font-weight: 600;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center; 
 }
 
 .buttonShow {
   display: inline-block;
-  margin-top: 20px;
+  position: static;
+  margin-top: 5px;
   font-size: 1.3em;
   color: white;
   background-color: transparent;
@@ -393,16 +414,680 @@
 
 .requirementsContainer {
   display: flex;
-  text-align: center;
   width: 97%;
-  justify-content: center;
+  justify-content: space-between;
+  text-align: center;
+  padding: 0 25px;
+  box-sizing: border-box;
 }
 
-.requirementsContainer h2 {
+.requirementsContainer > div {
+  flex: 1;
+  padding: 10px;
+}
+
+.requirementsContainer > div h2 {
   font-size: 1.2em;
 }
 
-.requirementsContainer p {
+.requirementsContainer > div p {
   font-size: 1.1em;
-  padding: 0 25px 0 25px;
+}
+
+.storesContainer {
+  display: flex;
+  flex-wrap: wrap;
+  padding-bottom: 40px;
+}
+
+.storesTagsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 97%;
+  margin-top: 20px;
+}
+
+.storeWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: hsla(0, 0%, 100%, .1);
+  border-radius: 10px;
+  padding: 10px 20px 10px 20px;
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
+}
+
+.storeWrapper:hover {
+  transform: scale(1.035);
+}
+
+.storeName {
+  color: #fff;
+  margin-left: 5px;
+}
+
+.storeLogo {
+  width: 25px;
+  height: 25px;
+  margin-right: 5px;
+}
+
+.storeLogosContainer {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.storeLogosContainer p {
+  font-size: 1.1em;
+  font-weight: 650;
+}
+
+.storeLogosContainer .storeWrapper {
+  break-inside: avoid;
+}
+
+.storeLogo.steam {
+  background-image: url('../assets/Img/steamstore.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.storeLogo.nintendo {
+  background-image: url('../assets/Img/nintendostore.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.storeLogo.xbox-store {
+  background-image: url('../assets/Img/xboxstore.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.storeLogo.epic-games {
+  background-image: url('../assets/Img/epicgamestore.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.storeLogo.apple-appstore {
+  background-image: url('../assets/Img/appstore.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.storeLogo.gog {
+  background-image: url('../assets/Img/gogstore.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.storeLogo.google-play {
+  background-image: url('../assets/Img/googleplaystore.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.storeLogo.playstation-store {
+  background-image: url('../assets/Img/playstationstore.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.tagsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tagsSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 1px;
+}
+
+.tag {
+  background-color: hsla(0, 0%, 100%, .1);
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 14px;
+  transition: transform 0.3s ease;
+}
+
+.tag:hover {
+  transform: scale(1.1);
+}
+
+@media (max-width: 1024px) and (min-width: 834px) {
+  .gameInfo {
+    top: 20%;
+    left: 60px;
+  }
+
+  .screenshotContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 91%;
+    margin: 80px 0 20px 0;
+  }
+
+  .screenshot {
+    max-width: 320px;
+    height: auto;
+  }
+
+  .prevButton, .nextButton {
+    position: absolute;
+    top:48%;
+    background-color: transparent;
+    font-size: 1.5em;
+    color: white;
+    cursor: pointer;
+    padding: 5px 5px 5px 5px;
+  }
+
+  .prevButton {
+    left: -2em;
+  }
+  
+  .nextButton {
+    right: -2em;
+  }
+
+  .navigationButtons {
+    bottom: 45%;
+    left: -50px;
+    right: -50px;
+  }
+}
+
+@media (max-width: 833px) and (min-width: 768px) {
+  .gameInfo {
+    top: 15%;
+    left: 60px;
+  }
+
+  .screenshotContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 90%;
+    margin: 80px 0 20px 0;
+  }
+
+  .prevButton, .nextButton {
+    position: absolute;
+    top:48%;
+    background-color: transparent;
+    font-size: 1.5em;
+    color: white;
+    cursor: pointer;
+    padding: 5px 5px 5px 5px;
+  }
+
+  .prevButton {
+    left: -2em;
+  }
+  
+  .nextButton {
+    right: -2em;
+  }
+
+  .navigationButtons {
+    bottom: 45%;
+    left: -50px;
+    right: -50px;
+  }
+}
+
+@media (max-width: 767px) {
+  .container {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .gameInfo {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0%;
+  }
+
+  .notSpecified {
+    top: 35em;
+    margin-top: 20px;
+  }
+  
+  .noRating {
+    margin-top: 60em;
+  }
+  
+  .noRequirements {
+    top: 55em;
+    margin-top: 20px;
+  }
+
+  .releasedAndPlatformsContainer {
+    display: flex;
+  }
+
+  .releasedAndPlatformsContainer p {
+    margin-right: 10px;
+    font-size: .9em;
+    color: black;
+    background-color: #fff;
+    padding: 3px 20px 3px 20px;
+    border-radius: 8px;
+    margin-left: 0;
+  }
+
+  .platformLogo {
+    margin-right: 2px;
+  }
+
+  .nameAndRatingContainer h2 {
+    display: flex;
+    text-align: center;
+    margin-left: -12px;
+    width: 90%;
+    font-size: 3em;
+  }
+
+  .ratingTable {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    margin: 10px 0 20px 0;
+    background-color: transparent;
+  }
+  
+  .ratingItem {
+    height: 55px;
+    margin-bottom: 10px;
+  }
+  
+  .ratingLogo {
+    width: 45px;
+    height: 45px;
+    margin: 0 auto;
+  }
+
+  .ratingNumbers {
+    flex-direction: column;
+    text-align: center;
+    margin-left: -20px;
+  }
+
+  .ratingNumber {
+    padding: 5px 0 5px 0;
+  }
+  
+  .ratingName {
+    font-size: 1.1em;
+    font-weight: 600;
+  }
+  
+  .ratingCount {
+    font-size: 1em;
+    font-weight: 700;
+  }
+  
+  .ratingCircle {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  .screenshotContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 83%;
+    margin: 50px 0 20px 0;
+  }
+  
+  .screenshotWrapper {
+    margin: 0;
+  }
+  
+  .screenshot {
+    max-width: 325px;
+    height: auto;
+  }
+  
+  .prevButton, .nextButton {
+    position: absolute;
+    top:48%;
+    background-color: transparent;
+    font-size: 1.15em;
+    color: white;
+    cursor: pointer;
+    padding: 5px 5px 5px 5px;
+  }
+  
+  .prevButton {
+    left: -3em;
+  }
+  
+  .nextButton {
+    right: -3em;
+  }
+  
+  .screenshotContainer button {
+    display: flex;
+  }
+  
+  .largeScreenshotOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .largeScreenshot {
+    position: relative;
+    width: 97%;
+    height: 97%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+  }
+  
+  .largeImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  .navigationButtons {
+    position: absolute;
+    bottom: 33em;
+    left: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .prevButtonLarge,
+  .nextButtonLarge,
+  .closeButtonLarge {
+    color: #fff;
+    border: none;
+    font-size: 1.5em;
+    background-color: transparent;
+  }
+  
+  .closeButtonLarge {
+    position: absolute;
+    top: 6em;
+    align-items: center;
+    padding-bottom: 0;
+  }
+
+  .descriptionContainer {
+    margin-left: -19px;
+  }
+
+  .descriptionContainer h2 {
+    font-size: 1.8em;
+  }
+
+  .descriptionContainer p {
+    font-size: 1em;
+    width: 100%;
+  }
+
+  .requirementsContainer {
+    margin-left: -30px;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .storesContainer {
+    flex-direction: column;
+  }
+
+  .storesTagsContainer {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .storeLogosContainer {
+    margin-left: 2.4em;
+  }
+
+  .storeLogosContainer p {
+    margin-left: 3.7em;
+  }
+
+  .storeWrapper {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .tagsSection {
+    width: 100%;
+    margin-left: -23px;
+    align-items: center;
+    padding-top: 10px;
+  }
+
+  .tagsSection h3 {
+    margin-right: 11px;
+  }
+}
+
+@media (max-width: 375px) and (min-width: 321px) {
+
+  .gameInfo {
+    margin-top: 0;
+    left: 52.5px;
+  }
+
+  .ratingTable {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    background-color: transparent;
+  }
+
+  .ratingNumbers {
+    display: flex;
+    flex-direction: column;
+    margin-top: 3em;
+  }
+  
+  .ratingName {
+    font-size: 1.1em;
+    font-weight: 600;
+  }
+  
+  .ratingCount {
+    font-size: .9em;
+    font-weight: 700;
+  }
+  
+  .ratingCircle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  .prevButton, .nextButton {
+    font-size: 1em;
+    padding: 5px 5px 5px 5px;
+  }
+
+  .prevButton {
+    left: -3.3em;
+  }
+  
+  .nextButton {
+    right: -3.3em;
+  }
+
+  .descriptionContainer {
+    margin-left: -20px;
+  }
+
+  .storeLogosContainer {
+    margin-left: 1em;
+  }
+
+  .storeLogosContainer p {
+    margin-left: 3.65em;
+  }
+
+  .tagsSection {
+    width: 100%;
+    margin-left: -23px;
+    align-items: center;
+    padding-top: 10px;
+  }
+
+  .tagsSection h3 {
+    margin-right: 11px;
+  }
+}
+
+@media (max-width: 321px) {
+
+  .gameInfo {
+    margin-top: 0%;
+    left: 2.2em;
+  }
+
+  .releasedAndPlatformsContainer p {
+    margin-right: 10px;
+    padding: 3px 10px 3px 10px;
+  }
+  
+  .platformLogo {
+    width: 20px;
+    height: 20px;
+    margin-right: 0px;
+  }
+
+  .nameAndRatingContainer h2 {
+    margin-top: 0;
+    margin-left: 0;
+    width: 80%;
+    font-size: 2.5em;
+  }
+
+  .ratingTable {
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+    height: auto;
+    background-color: transparent;
+  }
+
+  .ratingNumbers {
+    display: flex;
+    flex-direction: column;
+    margin-top: 3em;
+  }
+
+  .ratingNumber {
+    margin: 0 1em 0 0;
+  }
+
+  .ratingCircle {
+    width: 10px;
+    height: 10px;
+  }
+
+  .screenshotContainer {
+    width: 87%;
+  }
+
+  
+  .screenshot {
+    max-width: 250px;
+  }
+  
+  .prevButton, .nextButton {
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1em;
+  }
+  
+  .prevButton {
+    left: -32px;
+  }
+  
+  .nextButton {
+    right: -32px;
+  }
+  
+  .screenshotContainer button {
+    display: flex;
+  }
+  
+  .navigationButtons {
+    bottom: 24em;
+  }
+  
+  .closeButtonLarge {
+    top: 3em;
+  }
+
+  .descriptionContainer {
+    margin-left: -11px;
+  }
+
+  .requirementsContainer {
+    margin-left: -19px;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .storeLogosContainer {
+    margin-left: 0.5em;
+  }
+
+  .storeLogosContainer p {
+    margin-left: 3.6em;
+  }
+
+  .tagsSection {
+    margin-left: -12px;
+    align-items: center;
+    padding-top: 10px;
+  }
+
+  .tagsSection h3 {
+    margin-right: 15px;
+  }
 }

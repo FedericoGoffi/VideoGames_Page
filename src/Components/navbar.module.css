@@ -1,306 +1,675 @@
 .navBar {
-    display: flex;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: black;
-    height: 85px;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 999;
-  }
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  background-color: black;
+  height: 85px;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 999;
+}
 
-  .navBarLoginRegister {
-    background-color: transparent;
-  }
+.navBarLoginRegister {
+  background-color: transparent;
+}
 
-  .navBarDetails {
-    background-color: transparent !important;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%; 
-  }
+.navBarDetails {
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%; 
+}
+
+body.menu-open {
+  background: black !important;
+}
+
+.navBar.navBarScroll {
+  padding: 0;
+  background: black;
+}
   
-  .navBar.navBarScroll {
-    padding: 0;
-    background: black;
-  }
-    
-  .NavLink {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-size: 1.5em;
-    font-weight: 400;
-    color: white;
-    margin-top: 40px;
-  }
+.NavLinks {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 1.5em;
+  font-weight: 400;
+  color: white;
+  margin-top: 40px;
+}
 
-  .MenuContainer {
-    position: absolute;
-    top: 85px;
-    left: 0;
-    width: 100%;
-    background-color: #4f4f4f;
-    z-index: 999;
-  }
-
-  .MenuContainer ul {
-    display: flex;
-    flex-direction: column;
-    list-style-type: none;
-    margin-top: 25px;
-  }
-  
-  .MenuContainer li {
-    padding: 25px 0 25px 0;
-    text-align: center;
-  }
-
-  .containerSearch {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-bottom: 25px;
-  }
-
-  .TextLogo {
-    display: flex;
-    color: white;
-    font-weight: 1000;
-    font-size: 2.3em;
-    padding-top: 3px;
-  }
-    
-  .MenuLogo {
-    margin-right: 40px;
-    margin-top: 5px;
-    color: white;
-  }
-    
-  .CloseLogo {
-    margin-top: 100px;
-    margin-bottom: 100px;
-    color: white;
-  }
-
-  .SearchForm {
-    display: flex;
-    height: 40px;
-    margin-top: 5px;
-    padding: 0px 45px 0px 70px;
-  }
-
-  .SearchInput {
-    width: 23em;
-    background-color: transparent;
-    border: 2px solid gray;
-    padding-left: 15px;
-    font-size: 1em;
-  }
-
-  .SearchButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 55px;
-    background-color: gray;
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
-    border: none;
-    font-size: 1.5em;
-  }
-
-  .SearchButton:hover {
-    cursor: pointer;
-    border: 1px solid gray;
-  }
-
-  .containerDropDown {
-    color: white;
-  }
-
-  .ulDropDown p {
-    font-size: 1.2em;
-    font-weight: bold;
-    transition: transform 0.3s;
-    margin-top: 20px;
-  }
-
-  .ulDropDown p:hover {
-    cursor: pointer;
-    transform: scale(1.1);
-  }
-
-  .ulDropDown li {
-    position: relative;
-    list-style: none;
-  }
-
-  .ulDropDown li a {
-    padding: 10px 15px;
-    display: block;
-    text-decoration: none;
-  }
-
-  .ulDropDown > li {
-    display: inline-block;
-    margin-right: 20px;
-  }
-
-  .ulDropDown li ul {
-    display: none;
-    position: absolute;
-    background-color: black;
-    min-width: 140px;
-    top: 100%;
-    left: 0;
-    padding: 10px 0;
-    column-gap: 0px;
-  }
-
-  .ulDropDownGenres {
-    column-count: 2;
-    column-gap: 0px;
-    width: auto;
-    max-height: auto;
-    overflow-y: auto;
-  }
-
-  .liLinks li:hover {
+.MenuContainer {
+  position: absolute;
+  top: 85px;
+  left: 0;
+  width: 100%;
   background-color: #4f4f4f;
-  }
+  z-index: 999;
+}
 
-  .Login {
-    position: relative;
-    font-size: 1.1em;
-    font-weight: bold;
-    padding-right: 8px;
-    padding-top: 1px;
-    background-color: transparent;
-    border: none;
-  }
+.MenuContainer ul {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  margin-top: 25px;
+}
 
-  .Login::before,
-  .Login::after
-  {
-    content: '';
-    border-bottom: 2px solid white;
-    position: absolute;
-    opacity: 0;
-    transition: 0.5s;
-  }
+.MenuContainer li {
+  padding: 25px 0 25px 0;
+  text-align: center;
+}
 
-  .Login::before{
-    bottom: -5px;
-    width: 90%;
-    right: 0;
-  }
+.containerSearch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 25px;
+}
 
-  .Login::after{
-    bottom: -10px;
-    width: 60%;
-    left: 0;
-  }
-
-  .Login.activo::before,
-  .Login:hover::before{
-    opacity: 1;
-    width: 70%;
-  }
-
-  .Login.activo::after,
-  .Login:hover::after{
-    opacity: 1;
-    width: 40%;
-  }
-
-  .userNavbar {
-    font-size: 1.15em;
-    font-weight: bold;
-    position: relative;
-    color: white;
-  }
+.TextLogo {
+  display: flex;
+  color: white;
+  font-weight: 1000;
+  font-size: 2.3em;
+  padding-top: 1.5px;
+  padding-left: 20px;
+}
   
-  .userNavbar:hover {
-    cursor: pointer;
+.MenuLogo {
+  margin-right: 40px;
+  margin-top: 5px;
+  color: white;
+}
+  
+.CloseLogo {
+  margin-top: 100px;
+  margin-bottom: 100px;
+  color: white;
+}
+
+.SearchForm {
+  display: flex;
+  height: 40px;
+  margin-top: 5px;
+}
+
+.SearchInput {
+  width: 18em;
+  background-color: transparent;
+  border: 2px solid gray;
+  padding-left: 15px;
+  font-size: 1em;
+  margin-left: 35px;
+}
+
+.SearchButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 55px;
+  background-color: gray;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  border: none;
+  font-size: 1.5em;
+}
+
+.SearchButton:hover {
+  cursor: pointer;
+  border: 1px solid gray;
+}
+
+.containerDropDown {
+  display: flex;
+  align-items: center;
+}
+
+.ulDropDown p {
+  font-size: 1.2em;
+  font-weight: bold;
+  transition: transform 0.3s;
+  margin-top: 20px;
+}
+
+.ulDropDown p:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.ulDropDown li {
+  position: relative;
+  list-style: none;
+}
+
+.ulDropDown li a {
+  padding: 10px 15px;
+  display: block;
+  text-decoration: none;
+}
+
+.ulDropDown > li {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.ulDropDown li ul {
+  display: none;
+  position: absolute;
+  background-color: black;
+  min-width: 140px;
+  top: 100%;
+  left: 0;
+  padding: 10px 0;
+  column-gap: 0px;
+}
+
+.ulDropDownGenres {
+  column-count: 2;
+  column-gap: 0px;
+  width: auto;
+  max-height: auto;
+  overflow-y: auto;
+}
+
+.liLinks li:hover {
+background-color: #4f4f4f;
+}
+
+.Login {
+  position: relative;
+  font-size: 1em;
+  font-weight: bold;
+  margin: 3.5px 5px 0 -20px;
+  background-color: transparent;
+  border: none;
+}
+
+.Login::before,
+.Login::after
+{
+  content: '';
+  border-bottom: 2px solid white;
+  position: absolute;
+  opacity: 0;
+  transition: 0.5s;
+}
+
+.Login::before{
+  bottom: -5px;
+  width: 90%;
+  right: 0;
+}
+
+.Login::after{
+  bottom: -10px;
+  width: 60%;
+  left: 0;
+}
+
+.Login.activo::before,
+.Login:hover::before{
+  opacity: 1;
+  width: 70%;
+}
+
+.Login.activo::after,
+.Login:hover::after{
+  opacity: 1;
+  width: 40%;
+}
+
+.userNavbar {
+  font-size: 1.15em;
+  font-weight: bold;
+  position: relative;
+  color: white;
+  margin-left: 20px;
+}
+
+.userNavbar:hover {
+  cursor: pointer;
+}
+
+.userNavbar p {
+  padding-top: 1px;
+  transition: 0.3s;
+  margin-left: -20px;
+  margin-right: 25px;
+}
+
+.userNavbar p:hover {
+  transform: scale(1.1);
+}
+
+.userNavbar ul {
+  display: none;
+  position: absolute;
+  background-color: black;
+  min-width: 125px;
+  top: 80%;
+  left: -35px;
+  padding: 10px 0;
+}
+
+.userNavbar ul {
+  display: block;
+}
+
+.userNavbar ul li {
+  font-size: 1.3em;
+  font-weight: bold;
+  padding: 10px 15px;
+  display: block;
+  text-decoration: none;
+  color: white;
+}
+
+.userNavbar ul li:hover {
+  background-color: #4f4f4f;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+a {
+  color: white;
+}
+
+
+  @media (max-width: 1025px) and (min-width: 1024px) {
+    .SearchInput {
+      width: 16.5em;
+      padding-left: 15px;
+      font-size: 1em;
+      margin-left: 25px;
+    }
   }
 
-  .userNavbar p {
-    padding-top: 1px;
-    transition: 0.3s;
-  }
+  @media (max-width: 1024px) and (min-width: 765px) {
+    .NavLink {
+      font-size: 1em;
+      font-weight: 400;
+    }
 
-  .userNavbar p:hover {
-    transform: scale(1.1);
-  }
-  
-  .userNavbar ul {
-    display: none;
-    position: absolute;
-    background-color: black;
-    min-width: 125px;
-    top: 80%;
-    left: 0;
-    padding: 10px 0;
-  }
-  
-  .userNavbar:hover ul {
-    display: block;
-  }
-  
-  .userNavbar ul li {
-    font-size: .9em;
-    font-weight: 650;
-    padding: 10px 15px;
-    display: block;
-    text-decoration: none;
-    color: white;
-  }
-  
-  .userNavbar ul li:hover {
-    background-color: #4f4f4f;
-  }
+    .TextLogo {
+      font-weight: 1000;
+      font-size: 1.3em;
+      padding-left: 10px;
+      padding-top: 4.5px;
+    }
 
-  body.menu-open {
-    overflow: hidden;
-  }
+    .SearchInput {
+      width: 100%;
+      padding-left: 15px;
+      font-size: 1em;
+      margin-left: 25px;
+    }
+  
+    .SearchButton {
+      width: 55px;
+      font-size: 1.5em;
+    }
 
-  a {
-    color: white;
+    .ulDropDown p {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      font-size: 0.8em;
+      margin-top: 15.3px;
+    }
+
+    .userNavbar {
+      font-size: 0.75em;
+      margin-top: 1px;
+      margin-left: 20px;
+      margin-right: 0px;
+    }
   }
     
-  @media (min-width: 800px) {
-      .navBar {
-        justify-content: space-evenly;
-      }
-    
-      .LinksConteiner {
-        display: flex;
-        flex-direction: row;
-        list-style: none;
-        margin-top: 0px;
-        margin-bottom: 40px;
-      }
-    
-      .NavLink {
-        position: relative;
-        font-size: 1em;
-        font-weight: 500;
-      }
+  @media (max-width: 765px) {
 
-      .NavLink:hover {
-        cursor: pointer;
-      }
+    .navBar {
+      justify-content: space-around;
+    }
+
+    .TextLogo {
+      padding-top: 0px;
+      padding-left: 0px;
+    }
+
+    .menuContainer {
+      position: absolute;
+      top: 83px;
+      left: 0;
+      width: 100%;
+      background-color: #4f4f4f;
+      z-index: 999;
+    }
+
+    .menuContainerTransparent {
+      background-color: #242424;
+    }
+  
+    .menuContainer form {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 15px;
+    }
+  
+    .menuContainer form input {
+      width: 70%;
+      height: 30px;
+      padding: 5px;
+      border: 2px solid gray;
+      font-size: 1em;
+    }
+  
+    .menuContainer form button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 44px;
+      background-color: gray;
+      border-top-right-radius: 15px;
+      border-bottom-right-radius: 15px;
+      border: none;
+      font-size: 3em;
+    }
+  
+    .menuContainer .dropdownsContainer {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+  
+    .menuContainer .dropdownsContainer .dropdown {
+      position: relative;
+      display: inline-block;
+      margin-right: 10px;
+    }
+  
+    .menuContainer .dropdownsContainer .dropdown p {
+      cursor: pointer;
+      font-size: 1.1em;
+      font-weight: bold;
+      padding-left: 20px;
+    }
+  
+    .menuContainer .dropdownsContainer .dropdown p:hover {
+      transform: scale(1.1);
+    }
+  
+    .menuContainer .dropdownsContainer .dropdown ul {
+      display: none;
+      position: absolute;
+      background-color: black;
+      min-width: 160px;
+      top: 50%;
+      left: 0;
+      padding: 10px 0;
+      column-gap: 0px;
+    }
+  
+    .menuContainer .dropdownsContainer .dropdown ul li {
+      padding: 8px 15px;
+      list-style: none;
+      color: white;
+      cursor: pointer;
+    }
+  
+    .menuContainer .dropdownsContainer .dropdown ul li:hover {
+      background-color: #4f4f4f;
+    }
+  
+    .menuContainer .LoginButton {
+      font-size: 1em;
+      font-weight: bold;
+      padding: 6px 12px;
+      background-color: transparent;
+      color: white;
+      border: 2px solid white;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  
+    .menuContainer .LoginButton:hover {
+      background-color: white;
+      color: black;
+    }
+
+    .userNavbar {
+      font-size: 1.1em;
+      font-weight: bold;
+      position: relative;
+      color: white;
+    }
+  
+    .userNavbar:hover {
+      cursor: pointer;
+    }
     
-      .Scrolled {
-          position: fixed;
-          background: white;
-          width: 100%;
-          height: auto;
-          z-index: 1000;
-      }
+    .userNavbar p {
+      font-size: 1em;
+      font-weight: bold;
+      margin-top: 16px;
+      margin-left: 3px;
+    }
+    
+    .userNavbar p:hover {
+      transform: scale(1.1);
+    }
+    
+    .userDropdown {
+      display: none;
+      position: absolute;
+      background-color: black;
+      min-width: 140px;
+      top: 87.7%;
+      left: 288px;
+      padding: 10px 0;
+    }
+    
+    .userDropdown ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .userDropdown li {
+      padding: 10px 15px;
+      font-size: 1em;
+      font-weight: bold;
+    }
+    
+    .userDropdown li:hover {
+      background-color: #4f4f4f;
+    }
+    
+    .userDropdown a, .userDropdown button {
+      color: white;
+      text-decoration: none;
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: 0;
+      font: inherit;
+      cursor: pointer;
+    }
+    
+    .userDropdownOpen {
+      display: block;
+    }
+
+    .Login {
+      font-size: 1.1em;
+      font-weight: bold;
+      margin: 0px 5px 0 0px;
+    }
   }
+
+  @media (max-width: 391px) {
+    .menuContainer .dropdownsContainer .dropdown ul {
+      padding: 7px 0;
+    }
+  
+    .menuContainer .dropdownsContainer .dropdown ul li {
+      padding: 6px 20px;
+    }
+
+    .userDropdown {
+      display: none;
+      position: absolute;
+      background-color: black;
+      min-width: 140px;
+      top: 87.7%;
+      left: 250px;
+      padding: 10px 0;
+    }
+
+    .userNavbar {
+      font-size: 1.1em;
+      font-weight: bold;
+      position: relative;
+      color: white;
+    }
+  
+    .userNavbar:hover {
+      cursor: pointer;
+    }
     
+    .userNavbar p {
+      font-size: 1em;
+      font-weight: bold;
+      margin-top: 16px;
+      margin-left: 3px;
+    }
+    
+    .userNavbar p:hover {
+      transform: scale(1.1);
+    }
+    
+    .userDropdown ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .userDropdown li {
+      padding: 10px 15px;
+      font-size: 1em;
+      font-weight: bold;
+    }
+    
+    .userDropdown li:hover {
+      background-color: #4f4f4f;
+    }
+    
+    .userDropdown a, .userDropdown button {
+      color: white;
+      text-decoration: none;
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: 0;
+      font: inherit;
+      cursor: pointer;
+    }
+    
+    .userDropdownOpen {
+      display: block;
+    }
+  }
+  
+  @media (max-width: 321px) {
+
+    .ulDropDownGenres {
+      column-count: 3;
+      column-gap: 10px;
+    }
+    
+    .menuContainer .dropdownsContainer .dropdown ul {
+      padding: 5px 0;
+    }
+  
+    .menuContainer .dropdownsContainer .dropdown ul li {
+      padding: 1px 7px;
+    }
+
+    .userNavbar {
+      font-size: 1.1em;
+      font-weight: bold;
+      position: relative;
+      color: white;
+    }
+  
+    .userNavbar:hover {
+      cursor: pointer;
+    }
+    
+    .userNavbar p {
+      font-size: 1em;
+      font-weight: bold;
+      margin-top: 16px;
+      margin-left: 3px;
+    }
+    
+    .userNavbar p:hover {
+      transform: scale(1.1);
+    }
+    
+    .userDropdown {
+      display: none;
+      position: absolute;
+      background-color: black;
+      min-width: 140px;
+      top: 87.7%;
+      left: 183px;
+      padding: 10px 0;
+    }
+    
+    .userDropdown ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .userDropdown li {
+      padding: 10px 15px;
+      font-size: 1em;
+      font-weight: bold;
+    }
+    
+    .userDropdown li:hover {
+      background-color: #4f4f4f;
+    }
+    
+    .userDropdown a, .userDropdown button {
+      color: white;
+      text-decoration: none;
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: 0;
+      font: inherit;
+      cursor: pointer;
+    }
+    
+    .userDropdownOpen {
+      display: block;
+    }
+  }

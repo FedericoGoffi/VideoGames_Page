@@ -14,7 +14,7 @@ export const useApi = (searchQuery, page = 5, pageSize = 15) => {
 
         const params = {
           key: apiKey,
-          dates: '2019-01-01,2024-03-27',
+          dates: '2020-01-01,2024-01-01',
           platforms: '18,1,7',
           search: searchQuery,
           page: page,

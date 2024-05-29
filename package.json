@@ -15,6 +15,7 @@
     "bootstrap": "^4.0.0-alpha.6",
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "lib-utils-ts": "^0.0.0-test",
     "lucide-react": "^0.364.0",

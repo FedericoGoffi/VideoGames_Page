@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useGenres } from '../Hooks/GenresContext';
 import { useApi } from '../getApi';
+import Loading from './loading.jsx';
 import styles from './genres_game.module.css';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
@@ -98,8 +99,8 @@ const GenresGame = () => {
 
     return (
       <div>
-        {loading && <p>Loading...</p>}
-        {genresGames && genresGames.length > 0 && (
+        {loading && < Loading />}
+        {!loading && genresGames && genresGames.length > 0 && (
           <div className={styles.container}>
             {genresGames.map((game) => (
               <div 

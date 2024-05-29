@@ -18,32 +18,34 @@ export const SearchProvider = ({ children, page = 1, pageSize = 15 }) => {
     const fetchData = async () => {
       if (searchQuery.trim() === '') {
         setSearchResults([]);
+        setLoading(false);
         return;
       }
-  
+
+      setLoading(true);
       try {
-        setLoading(true);
         const url = 'https://api.rawg.io/api/games';
         const apiKey = '38f4fe9b1d3145c688f55ff81bd86f0f';
-  
+
         const params = {
           key: apiKey,
-          dates: '2019-01-01,2024-03-27',
+          dates: '2020-01-01,2024-01-01',
           platforms: '18,1,7',
           search: searchQuery,
           page: currentPage,
           page_size: pageSize
         };
-  
+
         const response = await axios.get(url, { params });
         setSearchResults(response.data.results);
       } catch (error) {
         console.error('Error fetching data:', error);
+        setSearchResults([]);
       } finally {
         setLoading(false);
       }
     };
-  
+
     fetchData();
   }, [searchQuery, currentPage, pageSize]);
 
